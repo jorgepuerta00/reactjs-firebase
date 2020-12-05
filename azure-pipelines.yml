@@ -68,7 +68,7 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
     
     # Publish the app as an artifact
-    - publish: $(Build.ArtifactStagingDirectory)
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: app
 
 # Staging release
@@ -94,3 +94,14 @@ stages:
         location: '$(location)'
         csmFile: '$(Pipeline.Workspace)/**/container-webapp-template.json'
         overrideParameters: '-webAppName $(webAppName) -hostingPlanName $(hostingPlanName) -appInsightsLocation "$(location)" -sku "S1 Standard" -registryName $(acrName) -registryLocation "$(location)" -registrySku standard -imageName $(imageName):$(Build.BuildId)'
+
+    # Deploy on Azure App Service
+    - task: AzureWebApp@1
+      displayName: 'Azure Web App Deploy: $(webAppName)'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        appType: webAppLinux
+        appName: $(webAppName)
+        runtimeStack: 'NODE|10.10'
+        package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+        startUpCommand: 'yarn start'
