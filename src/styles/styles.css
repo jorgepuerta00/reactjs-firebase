@@ -1,0 +1,9 @@
+/* purgecss start ignore */
+@tailwind base;
+@tailwind components;
+/* purgecss end ignore */
+@tailwind utilities;
+
+/* Styles not using Tailwind utilities */
+@import "./globals.css";
+@import "./Home.module.css";
