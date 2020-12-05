@@ -25,7 +25,7 @@ const Table: React.FC<ITable> = ({
           </tr>
           <tr className="">
             <td><label className="text-sm font-semibold leading-normal cursor-pointer">Hours / shifts:</label></td>
-            <td><label className="text-sm font-normal leading-normal cursor-pointer">{details.hours[0]} / {details.work_schedule}</label></td>
+            <td><label className="text-sm font-normal leading-normal cursor-pointer">{details.hours[0]} / {details.workSchedule}</label></td>
             <td>
               <div className="flex items-center justify-center rounded-md">
                 <a href="#" className="flex items-center justify-center px-5 py-2 border border-transparent font-xs rounded-md text-white bg-blue-500 hover:bg-blue-700">

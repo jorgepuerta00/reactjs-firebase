@@ -1,6 +1,6 @@
-import { useGetJobs } from '../api/useGetJobs';
+import { useGetJobs } from '../api';
 
-export function useJobs() {
-    const { data, error, isLoading } = useGetJobs();
+export function useJobs(keyword?: string) {
+    const { data, error, isLoading } = useGetJobs(keyword);
     return { data, error, isLoading }
 }

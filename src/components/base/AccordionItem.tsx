@@ -19,19 +19,19 @@ const AccordionItem: React.FC<IAccordionItem> = ({
 
   return (
     <>
-      {data.items.map((details: any) => (
-        <div key={details.job_id} className="tab-content overflow-hidden leading-normal">
+      {data.jobs.map((details: any) => (
+        <div key={details.jobId} className="tab-content overflow-hidden leading-normal">
           <div className="tab w-full overflow-hidden border-t">
-            <input className="absolute opacity-0" id={"tab-multi-"+details.job_id} type="checkbox" name="tabs" />
+            <input className="absolute opacity-0" id={"tab-multi-"+details.jobId} type="checkbox" name="tabs" />
 
             <div className="flex flex-row justify-between m-5">
               <div className="flex flex-col w-full">
-                <label className="pl-5 font-bold text-sm leading-normal cursor-pointer" htmlFor={"tab-multi-"+details.job_id}>{details.job_title}</label>
-                <label className="pl-5 text-sm leading-normal cursor-pointer" htmlFor={"tab-multi-"+details.job_id}>{details.job_type} | ${details.salary_range[0]} - ${details.salary_range[1]} an Hour | {details.city}</label>
+                <label className="pl-5 font-bold text-sm leading-normal cursor-pointer" htmlFor={"tab-multi-"+details.jobId}>{details.jobTitle}</label>
+                <label className="pl-5 text-sm leading-normal cursor-pointer" htmlFor={"tab-multi-"+details.jobId}>{details.jobType} | ${details.salaryRange[0]} - ${details.salaryRange[1]} an Hour | {details.city}</label>
               </div>
 
               <div className="flex w-full items-center justify-end">
-                <label className="pl-5 text-sm leading-normal cursor-pointer" htmlFor={"tab-multi-"+details.job_id}>{weeksBetween(details.created)} Weeks</label>
+                <label className="pl-5 text-sm leading-normal cursor-pointer" htmlFor={"tab-multi-"+details.jobId}>{weeksBetween(details.created)} Weeks</label>
               </div>
             </div>
 

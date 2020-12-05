@@ -146,7 +146,7 @@
   }
   /* Label formatting when open */
   .tab input:checked + label{
-  border-color: white; /*.border-indigo*/
-  background-color: white; /*.bg-gray-100 */
-  color: black; /*.text-indigo*/
+  border-color: white; 
+  background-color: white; 
+  color: black; 
   }

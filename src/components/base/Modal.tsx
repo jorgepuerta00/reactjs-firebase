@@ -23,7 +23,7 @@ const Modal: React.FC<IModal> = ({
     for (let [key, value] of Object(data) ) {
       mapped.push({
         key: value.key,
-        doc_count: value.doc_count.toLocaleString()
+        docCount: value.docCount.toLocaleString()
       });
     }
     return mapped;
@@ -52,7 +52,7 @@ const Modal: React.FC<IModal> = ({
                     {!isLoading && mappingData().map((data: any) => (
                       <div className={"flex flex-row items-center flex-wrap"} key={data.key}>
                         <a className="block mb-1 text-sm font-normal hover:text-blue-600">{data.key}</a>
-                        <a className="block mb-1 text-sm font-normal text-gray-300 pl-2 ordinal">{data.doc_count}</a>
+                        <a className="block mb-1 text-sm font-normal text-gray-300 pl-2 ordinal">{data.docCount}</a>
                       </div>
                     ))}
                     </div>

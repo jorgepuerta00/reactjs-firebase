@@ -1,0 +1,118 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# <https://docs.microsoft.com/azure/devops/pipelines/languages/javascript>
+
+trigger:
+- master
+
+variables:
+  buildConfiguration: 'Release'
+  location: 'East US'
+  acrHostName: 'healthexplorecontaineracr.azurecr.io'
+  acrName: 'healthexplorecontaineracr'
+  rgName: 'healthexplorecontaineracr-rg'
+  imageName: 'filtersweb'
+  webAppName: 'healthexplorefiltersweb'
+  hostingPlanName: 'healthexploreappserviceplan'
+  azureSubscription: 'AzureSC'
+
+stages:
+
+# Build Stage
+- stage: BuildAndTest
+  jobs:
+  - job: BuildAndTest
+    pool:
+      vmImage: 'Ubuntu-20.04'
+    steps:
+
+    # Create or update the ACR resource
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Azure Deployment: Create Azure Container Registry'
+      inputs:
+        azureSubscription: '$(azureSubscription)'
+        resourceGroupName: '$(rgName)'
+        location: $(location)
+        csmFile: '$(System.DefaultWorkingDirectory)/**/containerRegistry-template.json'
+        overrideParameters: '-registryName "$(acrName)" -registryLocation "$(location)" -registrySku standard'
+
+    # Install Node
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '12.x'
+      displayName: 'Install Node.js'
+
+    # Restore dependencies and build
+    - script: |
+        npm install
+        npm run build
+      displayName: 'npm install and build'
+    - task: ArchiveFiles@1
+      displayName: 'Archive files '
+      inputs:
+        rootFolder: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+    
+    # Copy build
+    - task: CopyFiles@2
+      displayName: 'Copy File to: $(TargetFolder)'
+      inputs:
+        SourceFolder: '$(Build.ArtifactStagingDirectory)'
+        Contents: '$(Build.BuildId).zip'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    # Build container image
+    - task: Docker@1
+      displayName: 'Build container image'
+      inputs:
+        azureSubscriptionEndpoint: '$(azureSubscription)'
+        azureContainerRegistry: '$(acrHostName)'
+        imageName: '$(imageName):$(Build.BuildId)'
+        useDefaultContext: false
+        buildContext: '$(System.DefaultWorkingDirectory)'
+        dockerFile: '**/Dockerfile'
+
+    # Push container image
+    - task: Docker@1
+      displayName: 'Push container image'
+      inputs:
+        azureSubscriptionEndpoint: '$(azureSubscription)'
+        azureContainerRegistry: '$(acrHostName)'
+        command: 'Push an image'
+        imageName: '$(imageName):$(Build.BuildId)'
+
+    # Copy ARM templates
+    - task: CopyFiles@2
+      displayName: 'Copy ARM templates'
+      inputs:
+        Contents: '**template.json*'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    
+    # Publish the app as an artifact
+    - publish: $(Build.StagingDirectory)
+      artifact: app
+
+# Staging release
+- stage: Staging
+  jobs:
+  - job: Release
+    pool:
+      vmImage: 'Ubuntu-20.04'
+    steps:
+    # Don't clone the repo
+    - checkout: none
+
+    # Download the published application artifact
+    - download: current
+      artifact: app
+
+    # Create or update Azure App Service
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Azure Deployment: Create Azure App Service'
+      inputs:
+        azureSubscription: '$(azureSubscription)'
+        resourceGroupName: '$(rgName)'
+        location: '$(location)'
+        csmFile: '$(Pipeline.Workspace)/**/container-webapp-template.json'
+        overrideParameters: '-webAppName $(webAppName) -hostingPlanName $(hostingPlanName) -appInsightsLocation "$(location)" -sku "S1 Standard" -registryName $(acrName) -registryLocation "$(location)" -registrySku standard -imageName $(imageName):$(Build.BuildId)'

@@ -71,7 +71,7 @@ function Header() {
           </div>
         
           <div className="flex justify-center items-center">
-            <Link href={"#"}>
+            <Link href="/">
               <a
                 className={`text-sm font-semibold hover:opacity-20 ${
                   router.pathname === "#" ? "text-primary-500" : ""

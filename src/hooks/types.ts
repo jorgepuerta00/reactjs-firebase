@@ -1,10 +1,10 @@
 export enum JobTypeEnum {
-  type = "job_type",
+  type = "jobType",
   name = "Job Type"
 };
 
 export enum WorkScheduleTypeEnum {
-  type = "work_schedule",
+  type = "workSchedule",
   name = "Work Schedule"
 };
 

@@ -4,6 +4,7 @@ import Filter from './base/Filter'
 import Modal from './base/Modal'
 import Search from './base/Search'
 import Table from './base/Table'
+import Sort from './base/Sort'
 import Page from './layout/Page'
 
 export {
@@ -13,5 +14,6 @@ export {
   Modal,
   Search,
   Table,
+  Sort,
   Page
 }

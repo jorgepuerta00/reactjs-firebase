@@ -1,4 +1,4 @@
-import { useGetFilters } from '../api/useGetFilters';
+import { useGetFilters } from '../api';
 import { JobTypeEnum, WorkScheduleTypeEnum, ExperienceTypeEnum, DepartmentTypeEnum } from "./types";
 
 export function useFilters() {

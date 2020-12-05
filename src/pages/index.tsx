@@ -1,77 +1,75 @@
 import React, { useEffect } from "react";
-import { Page, Accordion, Filter, Search } from "../components";
+import { Page, Accordion, Filter, Search, Sort } from "../components";
+import { useFilters, useJobs } from '../hooks'
 import styles from '../styles/Home.module.css'
 
-import { useFilters } from '../hooks/useFilters'
-import { useJobs } from '../hooks/useJobs'
+import { useGetJobs } from '../api';
 
 export interface IHomeProps {}	
 
 const Home: React.FC<IHomeProps> = () => {
 
+  const [filter, setFilter] = React.useState("");
+  const { data, isLoading } = useJobs(filter)
+
   const [jobPostings, setJobPostings] = React.useState("0");
-  const [ordering, setOrdering] = React.useState("Ascending");
+
+  const [dataJob, setDataJob] = React.useState([]);
+  const [isLoadingJobs, setIsLoadingJobs] = React.useState(true);
 
   const {
     dataJobTypes, isLoadingJobTypes, 
     dataDepartmentType, isLoadingDepartmentType,
     dataWorkScheduleType, isLoadingWorkScheduleType,
-    dataExperienceType, isLoadingExperienceType,
+    dataExperienceType, isLoadingExperienceType
   } = useFilters();
 
-  const { data, isLoading, error } = useJobs()
+  useEffect(() => {
+    setIsLoadingJobs(isLoading)
+    if(!isLoading) {
+      mappingDataJobs(data);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     if (!isLoadingJobTypes) {
       let jobs: number = 0;
       for (let [key, value] of Object(dataJobTypes) ) {
-        jobs += parseInt(value.doc_count)
+        jobs += parseInt(value.docCount)
       }
       setJobPostings(jobs.toLocaleString());
     }
   }, [isLoadingJobTypes]);
 
-  function setOrderingText() {
-    if (ordering == "Ascending") 
-      setOrdering("Descending");
-    else
-      setOrdering("Ascending");
-  }
+  const mappingDataJobs = (data: any) => {	
+    let mapped: any = [];
+    for (let [key, value] of Object(data) ) {
+      mapped.push({
+        key: key,
+        name: value.name,
+        jobTitle: value.jobTitle,
+        totalJobsInHospital: value.totalJobsInHospital,
+        jobs: value.jobs
+      });
+    }
+    setDataJob(mapped);
+  };
 
   return (
     <Page className="flex flex-col justify-center mt-16 sm:pt-24 lg:pb-4 sm:my-auto">
       <div className={styles.container}>
-        <Search />
+        <Search OnPress={(filter: string) => setFilter(filter)}/>
         <main className={styles.main}>
           <div className={styles.grid}>
-            <Filter data={dataJobTypes} isLoading={isLoadingJobTypes} title="Job Type" />
-            <Filter data={dataDepartmentType} isLoading={isLoadingDepartmentType} title="Deparment" />
-            <Filter data={dataWorkScheduleType} isLoading={isLoadingWorkScheduleType} title="Work Schedule" />
-            <Filter data={dataExperienceType} isLoading={isLoadingExperienceType} title="Experience" />
+            <Filter data={dataJobTypes} isLoading={isLoadingJobTypes} title="Job Type" OnPress={(filter: string) => setFilter(filter)} />
+            <Filter data={dataDepartmentType} isLoading={isLoadingDepartmentType} title="Deparment" OnPress={(filter: string) => setFilter(filter)}/>
+            <Filter data={dataWorkScheduleType} isLoading={isLoadingWorkScheduleType} title="Work Schedule" OnPress={(filter: string) => setFilter(filter)}/>
+            <Filter data={dataExperienceType} isLoading={isLoadingExperienceType} title="Experience" OnPress={(filter: string) => setFilter(filter)}/>
           </div>
           <div className={styles.job}>
             <div className={styles.card_job}>
-              <div className="flex justify-between w-full md:container md:mx-auto">
-                <div className="flex">
-                  <h1 className="font-semibold text-sm">{jobPostings}</h1>
-                  <h1 className="font-normal text-sm pl-1">job postings</h1>
-                </div>
-                <filter className="flex justify-center items-center">
-                  <a className="font-normal text-sm text-gray-400">Sort by</a>
-                  <a href="#" className="font-normal text-sm pl-2">Location</a>
-                  <a href="#" className="font-normal text-sm pl-2">Role</a>
-                  <a href="#" className="font-normal text-sm pl-2">Department</a>
-                  <a href="#" className="font-normal text-sm pl-2">Education</a>
-                  <a href="#" className="font-normal text-sm pl-2">Experience</a>
-                  <a href="#" onClick={() => setOrderingText()} className="font-normal text-sm pl-2 ">{ordering}</a>
-                  <div className="flex items-center justify-center rounded-md pl-2">
-                    <a href="#" className="flex items-center uppercase justify-center px-2 py-1 border border-blue-600 font-xs rounded-md text-blue-600 bg-white hover:bg-blue-50">
-                      Clear Sort
-                    </a>
-                  </div>
-                </filter>
-              </div>
-              <Accordion data={data} isLoading={isLoading} error={error} />
+              <Sort jobPostings={jobPostings} data={dataJob} />
+              <Accordion data={dataJob} isLoading={isLoadingJobs} />
             </div>
           </div>
         </main>

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 
-const FooterLink = (props: PropsWithChildren<{ href: string }>) => (
+const FooterLink = (props: PropsWithChildren<{ href?: string }>) => (
   <a href={props.href} className="font-normal hover:text-gray-900">
     {props.children}
   </a>
@@ -29,22 +29,22 @@ export default function Footer() {
               </span>
               <ul className="list-unstyled">
                 <li>
-                  <FooterLink href="#puerta">
+                  <FooterLink href="#">
                     Nurses
                   </FooterLink>
                 </li>
                 <li>
-                  <FooterLink href="#puerta">
+                  <FooterLink href="#">
                     Employers
                   </FooterLink>
                 </li>
                 <li>
-                  <FooterLink href="#puerta">
+                  <FooterLink href="#">
                     Social networking
                   </FooterLink>
                 </li>
                 <li>
-                  <FooterLink href="#puerta">
+                  <FooterLink href="#">
                     Jobs
                   </FooterLink>
                 </li>
@@ -56,17 +56,17 @@ export default function Footer() {
               </span>
               <ul className="list-unstyled">
                 <li>
-                  <FooterLink href="#puerta">
+                  <FooterLink href="#">
                     Terms of use
                   </FooterLink>
                 </li>
                 <li>
-                  <FooterLink href="#puerta">
+                  <FooterLink href="#">
                     Privacy policy
                   </FooterLink>
                 </li>
                 <li>
-                  <FooterLink href="#puerta">
+                  <FooterLink href="#">
                     Cookie policy
                   </FooterLink>
                 </li>
