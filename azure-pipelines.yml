@@ -12,8 +12,8 @@ variables:
   acrHostName: 'healthexplorecontaineracr.azurecr.io'
   acrName: 'healthexplorecontaineracr'
   rgName: 'healthexplorecontaineracr-rg'
-  imageName: 'filtersweb'
-  webAppName: 'healthexplorefiltersweb'
+  imageName: 'healthexplorewebapp'
+  webAppName: 'healthexplorewebapp'
   hostingPlanName: 'healthexploreappserviceplan'
   azureSubscription: 'AzureSC'
 
@@ -90,7 +90,7 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
     
     # Publish the app as an artifact
-    - publish: $(Build.StagingDirectory)
+    - publish: $(Build.ArtifactStagingDirectory)
       artifact: app
 
 # Staging release
