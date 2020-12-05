@@ -92,7 +92,7 @@ stages:
         azureSubscription: '$(azureSubscription)'
         resourceGroupName: '$(rgName)'
         location: '$(location)'
-        csmFile: '$(Pipeline.Workspace)/**/container-webapp-template.json'
+        csmFile: '$(Pipeline.Workspace)/app/container-webapp-template.json'
         overrideParameters: '-webAppName $(webAppName) -hostingPlanName $(hostingPlanName) -appInsightsLocation "$(location)" -sku "S1 Standard" -registryName $(acrName) -registryLocation "$(location)" -registrySku standard -imageName $(imageName):$(Build.BuildId)'
 
     # Deploy on Azure App Service
@@ -103,5 +103,5 @@ stages:
         appType: webAppLinux
         appName: $(webAppName)
         runtimeStack: 'NODE|10.10'
-        package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+        package: $(Pipeline.Workspace)/app/$(Build.BuildId).zip
         startUpCommand: 'yarn start'
