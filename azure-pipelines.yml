@@ -62,25 +62,25 @@ stages:
         Contents: '$(Build.BuildId).zip'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-    # Build container image
-    - task: Docker@1
-      displayName: 'Build container image'
-      inputs:
-        azureSubscriptionEndpoint: '$(azureSubscription)'
-        azureContainerRegistry: '$(acrHostName)'
-        imageName: '$(imageName):$(Build.BuildId)'
-        useDefaultContext: false
-        buildContext: '$(System.DefaultWorkingDirectory)'
-        dockerFile: '/Dockerfile'
+    # # Build container image
+    # - task: Docker@1
+    #   displayName: 'Build container image'
+    #   inputs:
+    #     azureSubscriptionEndpoint: '$(azureSubscription)'
+    #     azureContainerRegistry: '$(acrHostName)'
+    #     imageName: '$(imageName):$(Build.BuildId)'
+    #     useDefaultContext: false
+    #     buildContext: '$(System.DefaultWorkingDirectory)'
+    #     dockerFile: '/Dockerfile'
 
-    # Push container image
-    - task: Docker@1
-      displayName: 'Push container image'
-      inputs:
-        azureSubscriptionEndpoint: '$(azureSubscription)'
-        azureContainerRegistry: '$(acrHostName)'
-        command: 'Push an image'
-        imageName: '$(imageName):$(Build.BuildId)'
+    # # Push container image
+    # - task: Docker@1
+    #   displayName: 'Push container image'
+    #   inputs:
+    #     azureSubscriptionEndpoint: '$(azureSubscription)'
+    #     azureContainerRegistry: '$(acrHostName)'
+    #     command: 'Push an image'
+    #     imageName: '$(imageName):$(Build.BuildId)'
 
     # Copy ARM templates
     - task: CopyFiles@2
