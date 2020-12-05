@@ -86,14 +86,14 @@ stages:
       artifact: app
 
     # Create or update Azure App Service
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Azure Deployment: Create Azure App Service'
-      inputs:
-        azureSubscription: '$(azureSubscription)'
-        resourceGroupName: '$(rgName)'
-        location: '$(location)'
-        csmFile: '$(System.DefaultWorkingDirectory)/container-webapp-template.json'
-        overrideParameters: '-webAppName $(webAppName) -hostingPlanName $(hostingPlanName) -appInsightsLocation "$(location)" -sku "S1 Standard" -registryName $(acrName) -registryLocation "$(location)" -registrySku standard -imageName $(imageName):$(Build.BuildId)'
+    # - task: AzureResourceGroupDeployment@2
+    #   displayName: 'Azure Deployment: Create Azure App Service'
+    #   inputs:
+    #     azureSubscription: '$(azureSubscription)'
+    #     resourceGroupName: '$(rgName)'
+    #     location: '$(location)'
+    #     csmFile: '$(System.DefaultWorkingDirectory)/container-webapp-template.json'
+    #     overrideParameters: '-webAppName $(webAppName) -hostingPlanName $(hostingPlanName) -appInsightsLocation "$(location)" -sku "S1 Standard" -registryName $(acrName) -registryLocation "$(location)" -registrySku standard -imageName $(imageName):$(Build.BuildId)'
 
     # Deploy on Azure App Service
     - task: AzureWebApp@1
