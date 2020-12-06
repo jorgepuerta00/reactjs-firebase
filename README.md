@@ -1,3 +1,13 @@
+## About
+
+I built this template with all the tools I found useful to develop my own personal projects, so it can be a bit biased. If you find something that you think is not relevant or could be improved, please open an issue or a pull request to fix it.
+
+## Features
+
+**React.js + TypeScript**
+
+- Because I love strongly typed languages (I'm a bit of a java developer at heart)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -13,6 +23,17 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
+**APIs**
+
+- The demo project use two APIs, deployed on Azure App Service, through azure pipelines.
+
+## Azure DevOps - Build Status
+
+| Image | Status | Image | Status |
+| ------------- | ------------- | ------------- | ------------- |
+| Health-Explore WebApp |  [![Build Status](https://jorgepuerta.visualstudio.com/SeekQ/_apis/build/status/HealthExplore-webApp-Node-CI?branchName=master)](https://jorgepuerta.visualstudio.com/SeekQ/_build/latest?definitionId=22&branchName=master) | Health-Explore Job API | [![Build Status](https://jorgepuerta.visualstudio.com/SeekQ/_apis/build/status/HealthExplore-Job-Api-NetCore-CI?branchName=master)](https://jorgepuerta.visualstudio.com/SeekQ/_build/latest?definitionId=20&branchName=master) |
+| Health-Explore Filters API | [![Build Status](https://jorgepuerta.visualstudio.com/SeekQ/_apis/build/status/HealthExplore-Filters-Api-NetCore-CI?branchName=master)](https://jorgepuerta.visualstudio.com/SeekQ/_build/latest?definitionId=21&branchName=master) | 
 
 ## Learn More
 
