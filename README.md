@@ -100,7 +100,7 @@ The following steps show how to link the app you just pushed to GitHub to Azure 
 8. In the Region drop-down, choose a region closest to you.
 9. Select Free from the SKU drop-down.
 
-https://docs.microsoft.com/en-us/azure/static-web-apps/media/deploy-nextjs/create-static-web-app.png
+![alt text] (https://docs.microsoft.com/en-us/azure/static-web-apps/media/deploy-nextjs/create-static-web-app.png)
 
 ### Add a GitHub repository
 
@@ -111,14 +111,15 @@ The new Static Web Apps account needs access to the repository with your Next.js
 3. Find and select the name of the repository you created earlier.
 4. Choose master as the branch from the Branch drop-down.
 
-https://docs.microsoft.com/en-us/azure/static-web-apps/media/deploy-nextjs/connect-github.png
+![alt text] (https://docs.microsoft.com/en-us/azure/static-web-apps/media/deploy-nextjs/connect-github.png)
 
 ### Configure the build process
 
 Azure Static Web Apps is built to automatically carry out common tasks like installing npm modules and running npm run build during each deployment. There are, however, a few settings like the application source folder and the build destination folder that you need to configure manually.
 
 1. Click on the Build tab to configure the static output folder.
-https://docs.microsoft.com/en-us/azure/static-web-apps/media/deploy-nextjs/build-tab.png
+
+![alt text] (https://docs.microsoft.com/en-us/azure/static-web-apps/media/deploy-nextjs/build-tab.png)
 
 2. Type out in the App artifact location text box.
 
@@ -167,4 +168,5 @@ module.exports = {
 ```
 
 2. Push the new changes to your GitHub repository and wait for a few minutes while GitHub Actions builds your site again. After the build is complete, the 404 error disappears.
-https://docs.microsoft.com/en-us/azure/static-web-apps/media/deploy-nextjs/404-in-production-fixed.png
+
+![alt text] (https://docs.microsoft.com/en-us/azure/static-web-apps/media/deploy-nextjs/404-in-production-fixed.png)
