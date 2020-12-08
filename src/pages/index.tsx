@@ -68,8 +68,7 @@ const Home: React.FC<IHomeProps> = () => {
           </div>
           <div className={styles.job}>
             <div className={styles.card_job}>
-              <Sort jobPostings={jobPostings} data={dataJob} />
-              <Accordion data={dataJob} isLoading={isLoadingJobs} />
+              <Sort jobPostings={jobPostings} data={dataJob} isLoading={isLoadingJobs} />
             </div>
           </div>
         </main>

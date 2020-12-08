@@ -1,40 +1,28 @@
 import React from "react";
+import Accordion from "./Accordion";
 
 interface ISort {
   jobPostings: string
   data: any,
-  OnPress?: any
+  isLoading: any
 }
 
 const Sort: React.FC<ISort> = ({
   jobPostings,
   data,
-  OnPress
+  isLoading
 }) => {
 
-  const [filterName, setFilterName] = React.useState({
-    id: 0,
-    name: "Name",
-    symbol: "⇋",
-    select: "name",
-    order: "non"
-  });
-  const [filterTotalJobs, setFilterTotalJobs] = React.useState({
-    id: 1,
-    name: "Total Jobs In Hospital",
-    symbol: "⇋",
-    select: "totalJobsInHospital",
-    order: "non"
-  });
+  const [dataJob, setDataJob] = React.useState(data);
+
+  const [filterName, setFilterName] = React.useState({ id: 0, name: "Name", symbol: "⇋", select: "name", order: "non" });
+  const [filterTotalJobs, setFilterTotalJobs] = React.useState({ id: 1, name: "Total Jobs In Hospital", symbol: "⇋", select: "totalJobsInHospital", order: "non" });
 
   let [sorts, setSorts] = React.useState([])
 
-  function orderDataSet(){
-    if (sorts.length > 0) {
-      var sortedResult = sortResults(data, sorts);
-      OnPress && OnPress(sortedResult);
-    }
-  }
+  React.useEffect(() => {
+    setDataJob(data)
+  }, [data]);
 
   function existFilter(id: number) {
     return sorts.some(function(el) {
@@ -43,30 +31,23 @@ const Sort: React.FC<ISort> = ({
   }
 
   function createOrUpddateFilter(newFilter: any) {
-    console.log("filter to process: ", newFilter)
     if(existFilter(newFilter.id)){
       if(newFilter.order == "non") {
-        console.log("filter deleted")
-        deleteFilter(newFilter)
+        var filtered = sorts.filter(function(el) { return el.id != newFilter.id });
+        setSorts(filtered)
+        sorts = filtered
       }
       else{
-        const newSort = sorts.map(p => p.id === newFilter.id ? newFilter : p );
-        //setSorts(newSort)
-        sorts = newSort
-        console.log("filter updated")
+        var updated = sorts.map(p => p.id === newFilter.id ? newFilter : p );
+        setSorts(updated)
+        sorts = updated
       }
     }
     else {
-      sorts.push(newFilter)
-      console.log("filter created")
+      if(newFilter.order !== "non") {
+        sorts.push(newFilter)
+      }
     }
-    console.log("createOrUpddateFilter: ", sorts)
-  }
-
-  function deleteFilter(filter: any) {
-    var filtered = sorts.filter(function(el) { return el.id != filter.id });
-    sorts = filtered
-    //setSorts(filtered)
   }
 
   function updatesFilters(filter: any) {
@@ -83,27 +64,38 @@ const Sort: React.FC<ISort> = ({
       newFilter = { id: filter.id, name: filter.name, symbol: "↑", select: filter.select, order: "ascending" }
     }
 
-    createOrUpddateFilter(newFilter)
-
     return newFilter
   }
 
   function setOrderBy(propertyName: string) {
+    let newFilter: any
     if(propertyName == 'name') {
-      let newFilter = updatesFilters(filterName)
+      newFilter = updatesFilters(filterName)
       setFilterName(newFilter);
     }
     else if(propertyName == 'totalJobsInHospital') {
-      let newFilter = updatesFilters(filterTotalJobs)
+      newFilter = updatesFilters(filterTotalJobs)
       setFilterTotalJobs(newFilter);
     }
-    orderDataSet()
+    createOrUpddateFilter(newFilter)
+
+    console.log("sorts", sorts)
+
+    var sortedResult = sortResults(dataJob, sorts)
+    setDataJob(sortedResult)
   }
 
   const sortResults = (results: any, sorts: any) => {
-    return results.sort((a: any, b: any) => {
+    
+    if (sorts.length == 0) 
+      return results
+    
+    var sorted = results.sort((a: any, b: any) => {
       return sortMultiCompare(a, b, sorts)
     })
+    console.log("sortedResult: ", sorted)
+
+    return sorted
   }
 
   const sortMultiCompare = (a: any, b: any, sorts: any) => {
@@ -123,6 +115,7 @@ const Sort: React.FC<ISort> = ({
   }
 
   return (
+    <>
     <div className="flex justify-between items-center w-full md:container md:mx-auto">
       <div className="flex justify-center items-center">
         <h1 className="font-semibold text-sm">{jobPostings}</h1>
@@ -134,6 +127,9 @@ const Sort: React.FC<ISort> = ({
         <a href="#" onClick={() => setOrderBy("totalJobsInHospital")} className="font-normal text-sm pl-2">{filterTotalJobs.name} {filterTotalJobs.symbol}</a>
       </div>
     </div>
+
+    <Accordion data={dataJob} isLoading={isLoading} />
+    </>
   );
 };
 
